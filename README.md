@@ -2,6 +2,8 @@
 
 This package exports the `wrench_marker/WrenchMarker.h` header, which defines an utility class to generate rviz markers to display wrenches using several arrow markers inside a `visualization_msgs::MarkerArray` message.
 
+![Wrench marker on LWR](http://i.imgur.com/9a1wh65.png)
+
 ## Basic usage
 
 Initialize the class with the name of the reference frame for the wrench.
