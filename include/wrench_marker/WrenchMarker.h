@@ -4,8 +4,8 @@
 //
 // http://www.tecnalia.com/
 //
-// Industry-transport Division - Robotics Group
-// http://www.tecnalia.com/en/industry-transport/index.htm
+// Health Division - Medical Robotics Group
+// http://www.tecnalia.com/en/health/index.htm
 //
 // If you find any bug or if you have any question please contact
 // Miguel Prada <miguel.prada@tecnalia.com>
