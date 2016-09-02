@@ -41,7 +41,11 @@ public:
     : msg_( msg )
   {
 
-    if( !msg_ )
+    if( msg_ )
+    {
+        msg_->markers.clear();
+    }
+    else
     {
       msg_ = new visualization_msgs::MarkerArray;
     }
