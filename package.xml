@@ -12,6 +12,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>geometry_msgs</depend>
   <depend>visualization_msgs</depend>
+  <depend>roscpp</depend>
 
   <export>
   </export>
