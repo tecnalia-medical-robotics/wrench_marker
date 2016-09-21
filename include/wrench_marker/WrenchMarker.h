@@ -1,18 +1,13 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-// Copyright (C) 2016 Tecnalia
-//
-// http://www.tecnalia.com/
-//
-// Health Division - Medical Robotics Group
-// http://www.tecnalia.com/en/health/index.htm
-//
-// If you find any bug or if you have any question please contact
-// Miguel Prada <miguel.prada@tecnalia.com>
-//
-// Brief :
-//
-/////////////////////////////////////////////////////////////////////////////////
+/**
+ * @file   WrenchMarker.h
+ * @author Miguel Prada <miguel.prada@tecnalia.com>
+ * @date   2016
+ *
+ * Copyright 2016 Tecnalia Research & Innovation.
+ * Distributed under the GNU GPL v3. For full terms see https://www.gnu.org/licenses/gpl.txt
+ *
+ * @brief  Helper class to produce visualization_msgs::MarkerArray messages from a geometry_msgs::Wrench message.
+ */
 
 #ifndef WRENCH_MARKER_WRENCH_MARKER_H
 #define WRENCH_MARKER_WRENCH_MARKER_H
@@ -43,7 +38,7 @@ public:
 
     if( msg_ )
     {
-        msg_->markers.clear();
+      msg_->markers.clear();
     }
     else
     {
