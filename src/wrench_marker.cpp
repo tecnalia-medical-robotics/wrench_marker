@@ -14,7 +14,7 @@
 namespace wrench_marker
 {
 
-WrenchMarker::WrenchMarker( const std::string& frame, const std::string& ns, visualization_msgs::MarkerArray* msg )
+WrenchMarker::WrenchMarker( const std::string& ns, visualization_msgs::MarkerArray* msg )
   : msg_( msg )
 {
 
@@ -28,7 +28,6 @@ WrenchMarker::WrenchMarker( const std::string& frame, const std::string& ns, vis
   }
 
   visualization_msgs::Marker aux_marker;
-  aux_marker.header.frame_id = frame;
   aux_marker.ns = ns;
   aux_marker.id = 0;
   aux_marker.type = visualization_msgs::Marker::ARROW;
@@ -71,10 +70,18 @@ WrenchMarker::WrenchMarker( const std::string& frame, const std::string& ns, vis
 
 }
 
-const visualization_msgs::MarkerArray& WrenchMarker::populate( const geometry_msgs::Wrench& wrench, const ros::Time& time, const geometry_msgs::Point& pos )
+const visualization_msgs::MarkerArray& WrenchMarker::getMarker( const geometry_msgs::WrenchStamped& wrench_stamped, const ros::Time& time )
+{
+
+  return getMarker( wrench_stamped.wrench, wrench_stamped.header.frame_id, geometry_msgs::Point(), time );
+
+}
+
+const visualization_msgs::MarkerArray& WrenchMarker::getMarker( const geometry_msgs::Wrench& wrench, const std::string& frame, const geometry_msgs::Point& pos, const ros::Time& time )
 {
 
   msg_->markers[0].header.stamp = time;
+  msg_->markers[0].header.frame_id = frame;
   msg_->markers[0].points[0].x = pos.x;
   msg_->markers[0].points[0].y = pos.y;
   msg_->markers[0].points[0].z = pos.z;
@@ -83,6 +90,7 @@ const visualization_msgs::MarkerArray& WrenchMarker::populate( const geometry_ms
   msg_->markers[0].points[1].z = pos.z + FORCE_ARROW_SCALE * wrench.force.z;
 
   msg_->markers[1].header.stamp = time;
+  msg_->markers[1].header.frame_id = frame;
   msg_->markers[1].points[0].x = pos.x;
   msg_->markers[1].points[0].y = pos.y + TORQUE_ARROW_SEPARATION/2;
   msg_->markers[1].points[0].z = pos.z - TORQUE_ARROW_SCALE * wrench.torque.x;
@@ -91,6 +99,7 @@ const visualization_msgs::MarkerArray& WrenchMarker::populate( const geometry_ms
   msg_->markers[1].points[1].z = pos.z + TORQUE_ARROW_SCALE * wrench.torque.x;
 
   msg_->markers[2].header.stamp = time;
+  msg_->markers[2].header.frame_id = frame;
   msg_->markers[2].points[0].x = pos.x;
   msg_->markers[2].points[0].y = pos.y - TORQUE_ARROW_SEPARATION/2;
   msg_->markers[2].points[0].z = pos.z + TORQUE_ARROW_SCALE * wrench.torque.x;
@@ -99,6 +108,7 @@ const visualization_msgs::MarkerArray& WrenchMarker::populate( const geometry_ms
   msg_->markers[2].points[1].z = pos.z - TORQUE_ARROW_SCALE * wrench.torque.x;
 
   msg_->markers[3].header.stamp = time;
+  msg_->markers[3].header.frame_id = frame;
   msg_->markers[3].points[0].x = pos.x - TORQUE_ARROW_SCALE * wrench.torque.y;
   msg_->markers[3].points[0].y = pos.y;
   msg_->markers[3].points[0].z = pos.z + TORQUE_ARROW_SEPARATION/2;
@@ -107,6 +117,7 @@ const visualization_msgs::MarkerArray& WrenchMarker::populate( const geometry_ms
   msg_->markers[3].points[1].z = pos.z + TORQUE_ARROW_SEPARATION/2;
 
   msg_->markers[4].header.stamp = time;
+  msg_->markers[4].header.frame_id = frame;
   msg_->markers[4].points[0].x = pos.x + TORQUE_ARROW_SCALE * wrench.torque.y;
   msg_->markers[4].points[0].y = pos.y;
   msg_->markers[4].points[0].z = pos.z - TORQUE_ARROW_SEPARATION/2;
@@ -115,6 +126,7 @@ const visualization_msgs::MarkerArray& WrenchMarker::populate( const geometry_ms
   msg_->markers[4].points[1].z = pos.z - TORQUE_ARROW_SEPARATION/2;
 
   msg_->markers[5].header.stamp = time;
+  msg_->markers[5].header.frame_id = frame;
   msg_->markers[5].points[0].x = pos.x + TORQUE_ARROW_SEPARATION/2;
   msg_->markers[5].points[0].y = pos.y - TORQUE_ARROW_SCALE * wrench.torque.z;
   msg_->markers[5].points[0].z = pos.z;
@@ -123,6 +135,7 @@ const visualization_msgs::MarkerArray& WrenchMarker::populate( const geometry_ms
   msg_->markers[5].points[1].z = pos.z;
 
   msg_->markers[6].header.stamp = time;
+  msg_->markers[6].header.frame_id = frame;
   msg_->markers[6].points[0].x = pos.x - TORQUE_ARROW_SEPARATION/2;
   msg_->markers[6].points[0].y = pos.y + TORQUE_ARROW_SCALE * wrench.torque.z;
   msg_->markers[6].points[0].z = pos.z;

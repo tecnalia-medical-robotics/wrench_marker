@@ -13,7 +13,7 @@
 #define WRENCH_MARKER_WRENCH_MARKER_H
 
 #include <visualization_msgs/MarkerArray.h>
-#include <geometry_msgs/Wrench.h>
+#include <geometry_msgs/WrenchStamped.h>
 #include <geometry_msgs/Point.h>
 
 namespace wrench_marker
@@ -32,9 +32,11 @@ class WrenchMarker
 
 public:
 
-  WrenchMarker( const std::string& frame, const std::string& ns = "wrench", visualization_msgs::MarkerArray* msg = 0 );
+  WrenchMarker( const std::string& ns = "wrench", visualization_msgs::MarkerArray* msg = 0 );
 
-  const visualization_msgs::MarkerArray& populate( const geometry_msgs::Wrench& wrench, const ros::Time& time = ros::Time::now(), const geometry_msgs::Point& pos = geometry_msgs::Point() );
+  const visualization_msgs::MarkerArray& getMarker( const geometry_msgs::WrenchStamped& wrench_stamped, const ros::Time& time = ros::Time::now() );
+
+  const visualization_msgs::MarkerArray& getMarker( const geometry_msgs::Wrench& wrench, const std::string& frame, const geometry_msgs::Point& pos = geometry_msgs::Point(), const ros::Time& time = ros::Time::now() );
 
 private:
 
