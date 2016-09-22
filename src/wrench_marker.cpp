@@ -14,8 +14,9 @@
 namespace wrench_marker
 {
 
-WrenchMarker::WrenchMarker( const std::string& ns, visualization_msgs::MarkerArray* msg )
-  : msg_( msg )
+WrenchMarker::WrenchMarker( const WrenchMarkerScaleOptions& scale_options, const std::string& ns, visualization_msgs::MarkerArray* msg )
+  : scale_options_( scale_options )
+  , msg_( msg )
 {
 
   if( msg_ )
@@ -32,8 +33,8 @@ WrenchMarker::WrenchMarker( const std::string& ns, visualization_msgs::MarkerArr
   aux_marker.id = 0;
   aux_marker.type = visualization_msgs::Marker::ARROW;
   aux_marker.action = visualization_msgs::Marker::ADD;
-  aux_marker.scale.x = ARROW_SHAFT_DIAMETER;
-  aux_marker.scale.y = ARROW_HEAD_DIAMETER;
+  aux_marker.scale.x = scale_options_.arrow_shaft_diameter;
+  aux_marker.scale.y = scale_options_.arrow_head_diameter;
   aux_marker.color.r = 1.0;
   aux_marker.color.g = 0.0;
   aux_marker.color.b = 1.0;
@@ -85,62 +86,62 @@ const visualization_msgs::MarkerArray& WrenchMarker::getMarker( const geometry_m
   msg_->markers[0].points[0].x = pos.x;
   msg_->markers[0].points[0].y = pos.y;
   msg_->markers[0].points[0].z = pos.z;
-  msg_->markers[0].points[1].x = pos.x + FORCE_ARROW_SCALE * wrench.force.x;
-  msg_->markers[0].points[1].y = pos.y + FORCE_ARROW_SCALE * wrench.force.y;
-  msg_->markers[0].points[1].z = pos.z + FORCE_ARROW_SCALE * wrench.force.z;
+  msg_->markers[0].points[1].x = pos.x + scale_options_.force_arrow_scale * wrench.force.x;
+  msg_->markers[0].points[1].y = pos.y + scale_options_.force_arrow_scale * wrench.force.y;
+  msg_->markers[0].points[1].z = pos.z + scale_options_.force_arrow_scale * wrench.force.z;
 
   msg_->markers[1].header.stamp = time;
   msg_->markers[1].header.frame_id = frame;
   msg_->markers[1].points[0].x = pos.x;
-  msg_->markers[1].points[0].y = pos.y + TORQUE_ARROW_SEPARATION/2;
-  msg_->markers[1].points[0].z = pos.z - TORQUE_ARROW_SCALE * wrench.torque.x;
+  msg_->markers[1].points[0].y = pos.y + scale_options_.torque_arrow_separation/2;
+  msg_->markers[1].points[0].z = pos.z - scale_options_.torque_arrow_scale * wrench.torque.x;
   msg_->markers[1].points[1].x = pos.x;
-  msg_->markers[1].points[1].y = pos.y + TORQUE_ARROW_SEPARATION/2;
-  msg_->markers[1].points[1].z = pos.z + TORQUE_ARROW_SCALE * wrench.torque.x;
+  msg_->markers[1].points[1].y = pos.y + scale_options_.torque_arrow_separation/2;
+  msg_->markers[1].points[1].z = pos.z + scale_options_.torque_arrow_scale * wrench.torque.x;
 
   msg_->markers[2].header.stamp = time;
   msg_->markers[2].header.frame_id = frame;
   msg_->markers[2].points[0].x = pos.x;
-  msg_->markers[2].points[0].y = pos.y - TORQUE_ARROW_SEPARATION/2;
-  msg_->markers[2].points[0].z = pos.z + TORQUE_ARROW_SCALE * wrench.torque.x;
+  msg_->markers[2].points[0].y = pos.y - scale_options_.torque_arrow_separation/2;
+  msg_->markers[2].points[0].z = pos.z + scale_options_.torque_arrow_scale * wrench.torque.x;
   msg_->markers[2].points[1].x = pos.x;
-  msg_->markers[2].points[1].y = pos.y - TORQUE_ARROW_SEPARATION/2;
-  msg_->markers[2].points[1].z = pos.z - TORQUE_ARROW_SCALE * wrench.torque.x;
+  msg_->markers[2].points[1].y = pos.y - scale_options_.torque_arrow_separation/2;
+  msg_->markers[2].points[1].z = pos.z - scale_options_.torque_arrow_scale * wrench.torque.x;
 
   msg_->markers[3].header.stamp = time;
   msg_->markers[3].header.frame_id = frame;
-  msg_->markers[3].points[0].x = pos.x - TORQUE_ARROW_SCALE * wrench.torque.y;
+  msg_->markers[3].points[0].x = pos.x - scale_options_.torque_arrow_scale * wrench.torque.y;
   msg_->markers[3].points[0].y = pos.y;
-  msg_->markers[3].points[0].z = pos.z + TORQUE_ARROW_SEPARATION/2;
-  msg_->markers[3].points[1].x = pos.x + TORQUE_ARROW_SCALE * wrench.torque.y;
+  msg_->markers[3].points[0].z = pos.z + scale_options_.torque_arrow_separation/2;
+  msg_->markers[3].points[1].x = pos.x + scale_options_.torque_arrow_scale * wrench.torque.y;
   msg_->markers[3].points[1].y = pos.y;
-  msg_->markers[3].points[1].z = pos.z + TORQUE_ARROW_SEPARATION/2;
+  msg_->markers[3].points[1].z = pos.z + scale_options_.torque_arrow_separation/2;
 
   msg_->markers[4].header.stamp = time;
   msg_->markers[4].header.frame_id = frame;
-  msg_->markers[4].points[0].x = pos.x + TORQUE_ARROW_SCALE * wrench.torque.y;
+  msg_->markers[4].points[0].x = pos.x + scale_options_.torque_arrow_scale * wrench.torque.y;
   msg_->markers[4].points[0].y = pos.y;
-  msg_->markers[4].points[0].z = pos.z - TORQUE_ARROW_SEPARATION/2;
-  msg_->markers[4].points[1].x = pos.x - TORQUE_ARROW_SCALE * wrench.torque.y;
+  msg_->markers[4].points[0].z = pos.z - scale_options_.torque_arrow_separation/2;
+  msg_->markers[4].points[1].x = pos.x - scale_options_.torque_arrow_scale * wrench.torque.y;
   msg_->markers[4].points[1].y = pos.y;
-  msg_->markers[4].points[1].z = pos.z - TORQUE_ARROW_SEPARATION/2;
+  msg_->markers[4].points[1].z = pos.z - scale_options_.torque_arrow_separation/2;
 
   msg_->markers[5].header.stamp = time;
   msg_->markers[5].header.frame_id = frame;
-  msg_->markers[5].points[0].x = pos.x + TORQUE_ARROW_SEPARATION/2;
-  msg_->markers[5].points[0].y = pos.y - TORQUE_ARROW_SCALE * wrench.torque.z;
+  msg_->markers[5].points[0].x = pos.x + scale_options_.torque_arrow_separation/2;
+  msg_->markers[5].points[0].y = pos.y - scale_options_.torque_arrow_scale * wrench.torque.z;
   msg_->markers[5].points[0].z = pos.z;
-  msg_->markers[5].points[1].x = pos.x + TORQUE_ARROW_SEPARATION/2;
-  msg_->markers[5].points[1].y = pos.y + TORQUE_ARROW_SCALE * wrench.torque.z;
+  msg_->markers[5].points[1].x = pos.x + scale_options_.torque_arrow_separation/2;
+  msg_->markers[5].points[1].y = pos.y + scale_options_.torque_arrow_scale * wrench.torque.z;
   msg_->markers[5].points[1].z = pos.z;
 
   msg_->markers[6].header.stamp = time;
   msg_->markers[6].header.frame_id = frame;
-  msg_->markers[6].points[0].x = pos.x - TORQUE_ARROW_SEPARATION/2;
-  msg_->markers[6].points[0].y = pos.y + TORQUE_ARROW_SCALE * wrench.torque.z;
+  msg_->markers[6].points[0].x = pos.x - scale_options_.torque_arrow_separation/2;
+  msg_->markers[6].points[0].y = pos.y + scale_options_.torque_arrow_scale * wrench.torque.z;
   msg_->markers[6].points[0].z = pos.z;
-  msg_->markers[6].points[1].x = pos.x - TORQUE_ARROW_SEPARATION/2;
-  msg_->markers[6].points[1].y = pos.y - TORQUE_ARROW_SCALE * wrench.torque.z;
+  msg_->markers[6].points[1].x = pos.x - scale_options_.torque_arrow_separation/2;
+  msg_->markers[6].points[1].y = pos.y - scale_options_.torque_arrow_scale * wrench.torque.z;
   msg_->markers[6].points[1].z = pos.z;
 
   return *msg_;

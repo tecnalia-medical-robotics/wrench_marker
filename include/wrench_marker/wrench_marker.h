@@ -19,20 +19,31 @@
 namespace wrench_marker
 {
 
-const double ARROW_SHAFT_DIAMETER = 0.01;
-const double ARROW_HEAD_DIAMETER = 0.02;
+struct WrenchMarkerScaleOptions
+{
 
-const double FORCE_ARROW_SCALE = 0.1;
+  WrenchMarkerScaleOptions( double scale = 1.0 )
+    : arrow_shaft_diameter( scale*0.1 )
+    , arrow_head_diameter( scale*0.2 )
+    , force_arrow_scale( scale )
+    , torque_arrow_scale( scale )
+    , torque_arrow_separation( scale )
+  {}
 
-const double TORQUE_ARROW_SCALE = 0.1;
-const double TORQUE_ARROW_SEPARATION = 0.1;
+  double arrow_shaft_diameter;
+  double arrow_head_diameter;
+  double force_arrow_scale;
+  double torque_arrow_scale;
+  double torque_arrow_separation;
+
+};
 
 class WrenchMarker
 {
 
 public:
 
-  WrenchMarker( const std::string& ns = "wrench", visualization_msgs::MarkerArray* msg = 0 );
+  WrenchMarker( const WrenchMarkerScaleOptions& scale_options = WrenchMarkerScaleOptions(), const std::string& ns = "wrench", visualization_msgs::MarkerArray* msg = 0 );
 
   const visualization_msgs::MarkerArray& getMarker( const geometry_msgs::WrenchStamped& wrench_stamped, const ros::Time& time = ros::Time::now() );
 
@@ -41,6 +52,8 @@ public:
 private:
 
   visualization_msgs::MarkerArray* msg_;
+
+  WrenchMarkerScaleOptions scale_options_;
 
 };
 
