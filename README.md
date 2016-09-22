@@ -1,15 +1,41 @@
 # Wrench Marker
 
-This package exports the `wrench_marker/WrenchMarker.h` header, which defines an utility class to generate rviz markers to display wrenches using several arrow markers inside a `visualization_msgs::MarkerArray` message.
+This package contains both a library and an executable node.
+
+The `wrench_marker_publisher` node can be used to generate marker messages out of wrenches published to a ROS topic.
+
+It internally uses the `wrench_marker` library.
+This library exports the `wrench_marker/wrench_marker.h` header, in which a single class is declared.
+It can be used to generate rviz markers (i.e. `visualization_msgs/MarkerArray` messages) from wrenches (i.e. `geometry_msgs/Wrench` messages) that use several arrow markers to display the wrench in rviz.
+The responsibility of publishing the message lies in user code.
 
 ![Wrench marker on LWR](http://i.imgur.com/9a1wh65.png)
 
-## Basic usage
+## `wrench_marker_publisher` node
 
-Initialize the class with the name of the reference frame for the wrench.
+The `wrench_marker_publisher` node subscribes to `geometry_msgs/Wrench` messages in the `wrench` topic, and publishes a marker array to visualize it in `ẁrench_marker` topic.
+
+If `wrench_marker_frame` private parameter exists, it will use its value as the reference frame for the published markers.
+Otherwise, it will default to using the `world` frame.
+
+To run it with a different input topic and using a specific reference frame for the marker, run.
+
+```bash
+rosrun wrench_marker wrench_marker_publisher wrench:=INPUT_TOPIC _wrench_marker_frame:=MARKER_FRAME
+```
+
+## `wrench_marker` library basic usage
+
+The only header for the library can be included, provided the proper dependencies are added to the `package.xml` and `CMakeLists.txt`, with
 
 ```c++
-WrenchMarker wrench_marker( "world" );
+#include <wrench_marker/wrench_marker.h>
+```
+
+Initialize the class with the name of the reference frame for displaying the wrench marker.
+
+```c++
+wrench_marker::WrenchMarker my_wrench_marker( "world" );
 ```
 
 Then a marker array can be populated with the right markers with:
@@ -18,10 +44,12 @@ Then a marker array can be populated with the right markers with:
 geometry_msgs::Wrench wrench_msg;
 // add data to wrench_msg...
 
-const visualization_msgs::MarkerArray& msg = wrench_marker.populate( wrench_msg );
+const visualization_msgs::MarkerArray& msg = my_wrench_marker.populate( wrench_msg );
 ```
 
-## Reference
+It's up to the library user to later publish this message in any desired way.
+
+### Reference
 
 The full signature of the constructor is:
 
@@ -38,7 +66,7 @@ WrenchMarker(
 The full signature for `populate` function is:
 
 ```c++
-const visualization_msgs::MarkerArray& populate(
+const visualization_msgs::MarkerArray& WrenchMarker::populate(
     const geometry_msgs::Wrench& wrench,
     const ros::Time& time = ros::Time::now(),
     const geometry_msgs::Point& pos = geometry_msgs::Point() );
