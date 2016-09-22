@@ -1,5 +1,7 @@
 # Wrench Marker
 
+[![Build status badge](https://travis-ci.org/tecnalia-medical-robotics/wrench_marker.svg?branch=indigo-devel)](https://travis-ci.org/tecnalia-medical-robotics/wrench_marker)
+
 This package contains both a library and an executable node.
 
 The `wrench_marker_publisher` node can be used to generate marker messages out of wrenches published to a ROS topic.
@@ -80,3 +82,5 @@ const visualization_msgs::MarkerArray& WrenchMarker::populate(
 ---
 
 <sup>1</sup> Providing an allocated message is useful if used in conjunction with [`realtime_tools::RealtimePublisher`](https://github.com/ros-controls/realtime_tools).
+
+---
