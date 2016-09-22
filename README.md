@@ -26,7 +26,7 @@ rosrun wrench_marker wrench_marker_publisher wrench:=INPUT_TOPIC _wrench_marker_
 
 ## `wrench_marker` library basic usage
 
-The only header for the library can be included, provided the proper dependencies are added to the `package.xml` and `CMakeLists.txt`, with
+The only header for the library can be included (provided the proper dependencies are added to your `package.xml` and the include path is set in your `CMakeLists.txt`) with
 
 ```c++
 #include <wrench_marker/wrench_marker.h>
@@ -47,7 +47,9 @@ geometry_msgs::Wrench wrench_msg;
 const visualization_msgs::MarkerArray& msg = my_wrench_marker.populate( wrench_msg );
 ```
 
-It's up to the library user to later publish this message in any desired way.
+Note: It's up to the library user to later publish this message in any desired way.
+
+Building of your executable/library can then proceed as usual, linking against the exported catkin libraries.
 
 ### Reference
 
