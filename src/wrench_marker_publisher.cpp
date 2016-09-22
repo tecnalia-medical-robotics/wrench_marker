@@ -27,7 +27,8 @@ public:
   WrenchMarkerPublisher()
   {
 
-    if( !_nh.getParam( "wrench_marker_frame", _wrench_marker_frame ) )
+    ros::NodeHandle p_nh("~");
+    if( !p_nh.getParam( "wrench_marker_frame", _wrench_marker_frame ) )
     {
       ROS_WARN( "Could not read 'wrench_marker_frame' parameter. Using 'world' as reference for the marker" );
       _wrench_marker_frame = "world";
