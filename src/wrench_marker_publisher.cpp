@@ -6,7 +6,7 @@
  * Copyright 2016 Tecnalia Research & Innovation.
  * Distributed under the GNU GPL v3. For full terms see https://www.gnu.org/licenses/gpl.txt
  *
- * @brief  Node which listens to geometry_msgs/Wrench messages and publishes markers to visualize in rviz.
+ * @brief  Node which listens to geometry_msgs/WrenchStamped messages and publishes markers to visualize in rviz.
  */
 
 #include <wrench_marker/wrench_marker.h>
