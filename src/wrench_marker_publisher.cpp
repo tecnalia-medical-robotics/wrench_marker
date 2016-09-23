@@ -27,7 +27,15 @@ public:
   WrenchMarkerPublisher()
   {
 
-    _wrench_marker.reset( new wrench_marker::WrenchMarker );
+    ros::NodeHandle p_nh("~");
+    double wrench_marker_scale;
+    if( !p_nh.getParam( "wrench_marker_scale", wrench_marker_scale ) )
+    {
+      ROS_WARN( "Could not read 'wrench_marker_scale' parameter. Using 1.0 as default value" );
+      wrench_marker_scale = 1.0;
+    }
+
+    _wrench_marker.reset( new wrench_marker::WrenchMarker( wrench_marker::WrenchMarkerScaleOptions( wrench_marker_scale ) ) );
 
     _wrench_sub = _nh.subscribe( "wrench", 1, &WrenchMarkerPublisher::wrench_cb, this );
     _wrench_marker_pub = _nh.advertise<visualization_msgs::MarkerArray>( "wrench_marker", 1 );
