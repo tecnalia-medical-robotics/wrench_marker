@@ -17,10 +17,12 @@ The responsibility of publishing the message lies in user code.
 
 The `wrench_marker_publisher` node subscribes to `geometry_msgs/WrenchStamped` messages in the `wrench` topic, and publishes a marker array to visualize it in `wrench_marker` topic.
 
-To run it with a different input topic, run.
+The generated marker can be uniformly scaled by setting the private `wrench_marker_scale` parameter.
+
+To run it with a different input topic and/or scaling factor run.
 
 ```bash
-rosrun wrench_marker wrench_marker_publisher wrench:=INPUT_TOPIC
+rosrun wrench_marker wrench_marker_publisher wrench:=INPUT_TOPIC _wrench_marker_scale:=SCALING_FACTOR
 ```
 
 ## `wrench_marker` library basic usage
@@ -32,7 +34,7 @@ Sample code for how to use the `wrench_marker` library follows.
 
 int main( int argc, char** argv )
 {
-  wrench_marker::WrenchMarker my_wrench_marker();
+  wrench_marker::WrenchMarker my_wrench_marker;
 
   geometry_msgs::WrenchStamped wrench_msg;
   // Fill wrench data
@@ -51,11 +53,13 @@ A more ellaborate use-case can be found in [`wrench_marker_publisher.cpp`](src/w
 The full signature of the constructor is:
 
 ```c++
-WrenchMarker::WrenchMarker( 
+WrenchMarker::WrenchMarker(
+  const WrenchMarkerScaleOptions scale_options = WrenchMarkerScaleOptions();
   const std::string& ns = "wrench",
   visualization_msgs::MarkerArray* msg = 0 );
 ```
 
+- `scale_options` is an structure which can be used to control the scaling/positioning of the different arrows in the generated marker
 - `ns` is the namespace for the markers
 - `msg` is a pre-allocated `MarkerArray` message for internal use<sup>1</sup>
 
