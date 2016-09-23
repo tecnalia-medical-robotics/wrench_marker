@@ -6,12 +6,12 @@
  * Copyright 2016 Tecnalia Research & Innovation.
  * Distributed under the GNU GPL v3. For full terms see https://www.gnu.org/licenses/gpl.txt
  *
- * @brief  Node which listens to geometry_msgs/Wrench messages and publishes markers to visualize in rviz.
+ * @brief  Node which listens to geometry_msgs/WrenchStamped messages and publishes markers to visualize in rviz.
  */
 
 #include <wrench_marker/wrench_marker.h>
 
-#include <geometry_msgs/Wrench.h>
+#include <geometry_msgs/WrenchStamped.h>
 
 #include <ros/ros.h>
 
@@ -27,14 +27,7 @@ public:
   WrenchMarkerPublisher()
   {
 
-    ros::NodeHandle p_nh("~");
-    if( !p_nh.getParam( "wrench_marker_frame", _wrench_marker_frame ) )
-    {
-      ROS_WARN( "Could not read 'wrench_marker_frame' parameter. Using 'world' as reference for the marker" );
-      _wrench_marker_frame = "world";
-    }
-
-    _wrench_marker.reset( new wrench_marker::WrenchMarker( _wrench_marker_frame ) );
+    _wrench_marker.reset( new wrench_marker::WrenchMarker );
 
     _wrench_sub = _nh.subscribe( "wrench", 1, &WrenchMarkerPublisher::wrench_cb, this );
     _wrench_marker_pub = _nh.advertise<visualization_msgs::MarkerArray>( "wrench_marker", 1 );
@@ -43,11 +36,10 @@ public:
 
 private:
 
-  void wrench_cb( const geometry_msgs::WrenchConstPtr& wrench_msg )
+  void wrench_cb( const geometry_msgs::WrenchStampedConstPtr& wrench_msg )
   {
 
-    const visualization_msgs::MarkerArray& wrench_marker_msg = _wrench_marker->populate( *wrench_msg );
-    _wrench_marker_pub.publish( wrench_marker_msg );
+    _wrench_marker_pub.publish( _wrench_marker->getMarker( *wrench_msg ) );
 
   }
 
