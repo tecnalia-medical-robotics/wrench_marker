@@ -25,6 +25,15 @@ To run it with a different input topic and/or scaling factor run.
 rosrun wrench_marker wrench_marker_publisher wrench:=INPUT_TOPIC _wrench_marker_scale:=SCALING_FACTOR
 ```
 
+Fine grained scaling control is applied (after initializing default values based on the general `wrench_marker_scale`) by reading from the following private parameters:
+
+- `arrow_shaft_diameter`
+- `arrow_head_diameter`
+- `force_arrow_scale`
+- `torque_arrow_scale`
+- `torque_arrow_separation`
+
+
 ## `wrench_marker` library basic usage
 
 Sample code for how to use the `wrench_marker` library follows.

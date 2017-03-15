@@ -28,6 +28,8 @@ public:
   {
 
     ros::NodeHandle p_nh("~");
+
+    // Read general scaling factor
     double wrench_marker_scale;
     if( !p_nh.getParam( "wrench_marker_scale", wrench_marker_scale ) )
     {
@@ -35,7 +37,31 @@ public:
       wrench_marker_scale = 1.0;
     }
 
-    _wrench_marker.reset( new wrench_marker::WrenchMarker( wrench_marker::WrenchMarkerScaleOptions( wrench_marker_scale ) ) );
+    wrench_marker::WrenchMarkerScaleOptions wrench_marker_scale_options( wrench_marker_scale );
+
+    // Read fine grained scaling parameters
+    if( !p_nh.getParam( "arrow_shaft_diameter", wrench_marker_scale_options.arrow_shaft_diameter ) )
+    {
+      ROS_WARN( "Could not read 'arrow_shaft_diameter' parameter. Defaulting based on general marker scale." );
+    }
+    if( !p_nh.getParam( "arrow_head_diameter", wrench_marker_scale_options.arrow_head_diameter ) )
+    {
+      ROS_WARN( "Could not read 'arrow_head_diameter' parameter. Defaulting based on general marker scale." );
+    }
+    if( !p_nh.getParam( "force_arrow_scale", wrench_marker_scale_options.force_arrow_scale ) )
+    {
+      ROS_WARN( "Could not read 'force_arrow_scale' parameter. Defaulting based on general marker scale." );
+    }
+    if( !p_nh.getParam( "torque_arrow_scale", wrench_marker_scale_options.torque_arrow_scale ) )
+    {
+      ROS_WARN( "Could not read 'torque_arrow_scale' parameter. Defaulting based on general marker scale." );
+    }
+    if( !p_nh.getParam( "torque_arrow_separation", wrench_marker_scale_options.torque_arrow_separation ) )
+    {
+      ROS_WARN( "Could not read 'torque_arrow_separation' parameter. Defaulting based on general marker scale." );
+    }
+
+    _wrench_marker.reset( new wrench_marker::WrenchMarker( wrench_marker_scale_options ) );
 
     _wrench_sub = _nh.subscribe( "wrench", 1, &WrenchMarkerPublisher::wrench_cb, this );
     _wrench_marker_pub = _nh.advertise<visualization_msgs::MarkerArray>( "wrench_marker", 1 );
