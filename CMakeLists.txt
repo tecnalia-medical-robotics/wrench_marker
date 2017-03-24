@@ -7,22 +7,27 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
 )
 
+find_package( Boost REQUIRED )
+
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES wrench_marker
+  LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS geometry_msgs visualization_msgs
 )
 
-include_directories( include )
-include_directories( ${catkin_INCLUDE_DIRS} )
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+)
 
-add_library( wrench_marker src/wrench_marker.cpp )
-target_link_libraries( wrench_marker ${catkin_LIBRARIES} )
+add_library( ${PROJECT_NAME} src/${PROJECT_NAME}.cpp )
+target_link_libraries( ${PROJECT_NAME} ${catkin_LIBRARIES} )
 
-add_executable( wrench_marker_publisher src/wrench_marker_publisher.cpp )
-target_link_libraries( wrench_marker_publisher wrench_marker ${catkin_LIBRARIES} )
+add_executable( ${PROJECT_NAME}_publisher src/${PROJECT_NAME}_publisher.cpp )
+target_link_libraries( ${PROJECT_NAME}_publisher ${PROJECT_NAME} ${catkin_LIBRARIES} )
 
-install( TARGETS wrench_marker
+install( TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_publisher
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
@@ -32,8 +37,4 @@ install( DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
   FILES_MATCHING PATTERN "*.h"
   PATTERN ".svn" EXCLUDE
-)
-
-install( TARGETS wrench_marker_publisher
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
